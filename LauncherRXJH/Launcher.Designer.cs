@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Launcher));
             this.startGameButton = new System.Windows.Forms.Button();
-            this.serverIpTextBpx = new System.Windows.Forms.TextBox();
+            this.serverIpTextBox = new System.Windows.Forms.TextBox();
             this.serverPortTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,14 +46,14 @@
             this.startGameButton.UseVisualStyleBackColor = true;
             this.startGameButton.Click += new System.EventHandler(this.StartGameButton_Click);
             // 
-            // serverIpTextBpx
+            // serverIpTextBox
             // 
-            this.serverIpTextBpx.Location = new System.Drawing.Point(12, 25);
-            this.serverIpTextBpx.MaxLength = 15;
-            this.serverIpTextBpx.Name = "serverIpTextBpx";
-            this.serverIpTextBpx.Size = new System.Drawing.Size(188, 20);
-            this.serverIpTextBpx.TabIndex = 1;
-            this.serverIpTextBpx.Text = "127.0.0.1";
+            this.serverIpTextBox.Location = new System.Drawing.Point(12, 25);
+            this.serverIpTextBox.MaxLength = 15;
+            this.serverIpTextBox.Name = "serverIpTextBox";
+            this.serverIpTextBox.Size = new System.Drawing.Size(188, 20);
+            this.serverIpTextBox.TabIndex = 1;
+            this.serverIpTextBox.Text = "127.0.0.1";
             // 
             // serverPortTextBox
             // 
@@ -91,7 +91,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serverPortTextBox);
-            this.Controls.Add(this.serverIpTextBpx);
+            this.Controls.Add(this.serverIpTextBox);
             this.Controls.Add(this.startGameButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -100,7 +100,7 @@
             this.Name = "Launcher";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Launcher";
+            this.Text = "EZ Launcher";
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -110,7 +110,7 @@
         #endregion
 
         private System.Windows.Forms.Button startGameButton;
-        private System.Windows.Forms.TextBox serverIpTextBpx;
+        private System.Windows.Forms.TextBox serverIpTextBox;
         private System.Windows.Forms.TextBox serverPortTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

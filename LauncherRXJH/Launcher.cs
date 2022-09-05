@@ -7,15 +7,22 @@ using System.Windows.Forms;
 
 namespace LauncherRXJH
 {
-
     public partial class Launcher : Form
     {
-
         private readonly byte[] localIP = Encoding.ASCII.GetBytes("127.0.0.1");
-        private readonly byte[] PatchFind = { 0x43, 0x61, 0x6E, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x43, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x20, 0x21, 0x21, 0x00, 0x00, 0x00 };
-        private List<byte> byteList = new List<byte>() { 0x43, 0x61, 0x6E, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x43, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x20, 0x21, 0x21, 0x00, 0x00, 0x00 };
+
+        private readonly byte[] PatchFind = { 0x43, 0x61, 0x6E, 0x20, 0x4E, 0x6F, 0x74, 0x20,
+                                              0x43, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x20,
+                                              0x47, 0x61, 0x6D, 0x65, 0x53, 0x65, 0x72, 0x76,
+                                              0x65, 0x72, 0x20, 0x21, 0x21, 0x00, 0x00, 0x00 };
+
+        private List<byte> byteList = new List<byte>() { 0x43, 0x61, 0x6E, 0x20, 0x4E, 0x6F, 0x74, 0x20,
+                                                         0x43, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x20,
+                                                         0x47, 0x61, 0x6D, 0x65, 0x53, 0x65, 0x72, 0x76,
+                                                         0x65, 0x72, 0x20, 0x21, 0x21, 0x00, 0x00, 0x00 };
         private readonly byte[] blankByte = { 0x00 };
         private readonly string clientExe = "Client.exe";
+        private readonly string launcherIpPort = @"launcher.dat";
         private string serverIp;
         private string serverPort;
         private byte[] serverIpBytes;
@@ -25,6 +32,15 @@ namespace LauncherRXJH
         public Launcher()
         {
             InitializeComponent();
+
+            // Check if File Exists
+            if (File.Exists(launcherIpPort))
+            {
+                // Read File and Set TextBox strings
+                string[] readLauncherFile = File.ReadAllLines(launcherIpPort, Encoding.UTF8);
+                serverIpTextBox.Text = readLauncherFile[0];
+                serverPortTextBox.Text = readLauncherFile[1];
+            }
         }
 
         #region Find Bytes in Byte Array
@@ -39,7 +55,6 @@ namespace LauncherRXJH
             return true;
         }
         #endregion
-
 
         #region Write Byte Array to File
         private void PatchFile(string originalFile, string patchedFile)
@@ -68,17 +83,21 @@ namespace LauncherRXJH
                 }
             }
 
-            // Save it to another location.
+            // Save it to location.
             File.WriteAllBytes(patchedFile, fileContent);
         }
         #endregion
 
-        #region Start Game Button
+        #region Start Game Button Functions
         private void StartGameButton_Click(object sender, EventArgs e)
         {
             // Set IP and Port
-            serverIp = serverIpTextBpx.Text;
+            serverIp = serverIpTextBox.Text;
             serverPort = serverPortTextBox.Text;
+
+            // Get IP and Port to write to launcher file
+            string[] setIpPortStrings = { serverIp, serverPort };
+            File.WriteAllLines(launcherIpPort, setIpPortStrings);
 
             // Check if clientExe exists
             if (File.Exists(clientExe))
@@ -97,7 +116,7 @@ namespace LauncherRXJH
                 }
 
                 // Sleep thread after patching
-                System.Threading.Thread.Sleep(200);
+                //System.Threading.Thread.Sleep(200);
 
                 // Run Client with command line arguments
                 try
@@ -111,7 +130,7 @@ namespace LauncherRXJH
                 }
 
                 // Sleep thread after running
-                System.Threading.Thread.Sleep(200);
+                //System.Threading.Thread.Sleep(200);
 
                 // Close launcher
                 this.Close();
