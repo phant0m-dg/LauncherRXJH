@@ -3,31 +3,36 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace LauncherRXJH
 {
     public partial class Launcher : Form
     {
-        private readonly byte[] localIP = Encoding.ASCII.GetBytes("127.0.0.1");
+        // localhost IP address
+        private readonly byte[] localhostIP = Encoding.ASCII.GetBytes("127.0.0.1");
 
+        // String "Can Not Connect GameServer !!" in Client.exe
         private readonly byte[] PatchFind = { 0x43, 0x61, 0x6E, 0x20, 0x4E, 0x6F, 0x74, 0x20,
                                               0x43, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x20,
                                               0x47, 0x61, 0x6D, 0x65, 0x53, 0x65, 0x72, 0x76,
                                               0x65, 0x72, 0x20, 0x21, 0x21, 0x00, 0x00, 0x00 };
 
-        private List<byte> byteList = new List<byte>() { 0x43, 0x61, 0x6E, 0x20, 0x4E, 0x6F, 0x74, 0x20,
-                                                         0x43, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x20,
-                                                         0x47, 0x61, 0x6D, 0x65, 0x53, 0x65, 0x72, 0x76,
-                                                         0x65, 0x72, 0x20, 0x21, 0x21, 0x00, 0x00, 0x00 };
+        private List<byte> byteList = new(new byte[32]);
+
         private readonly byte[] blankByte = { 0x00 };
+
         private readonly string clientExe = "Client.exe";
         private readonly string launcherIpPort = @"launcher.dat";
+
         private string serverIp;
         private string serverPort;
+
         private byte[] serverIpBytes;
         private byte[] fileContent;
-        ProcessStartInfo runCLient = new ProcessStartInfo();
+
+        ProcessStartInfo runCLient = new();
 
         public Launcher()
         {
@@ -38,7 +43,7 @@ namespace LauncherRXJH
             {
                 // Read File and Set TextBox strings
                 string[] readLauncherFile = File.ReadAllLines(launcherIpPort, Encoding.UTF8);
-                serverIpTextBox.Text = readLauncherFile[0];
+                ipAddressControl.Text = readLauncherFile[0];
                 serverPortTextBox.Text = readLauncherFile[1];
             }
         }
@@ -62,11 +67,11 @@ namespace LauncherRXJH
             // Set serverIp byte array
             serverIpBytes = Encoding.ASCII.GetBytes(serverIp);
 
-            // Insert new IP and Port into byte array
+            // Insert new IP and localhost IP into byte array
             byteList.InsertRange(PatchFind.Length, serverIpBytes);
             byteList.InsertRange(PatchFind.Length + serverIpBytes.Length, blankByte);
-            byteList.InsertRange(PatchFind.Length + serverIpBytes.Length + blankByte.Length, localIP);
-            byteList.InsertRange(PatchFind.Length + serverIpBytes.Length + blankByte.Length + localIP.Length, blankByte);
+            byteList.InsertRange(PatchFind.Length + serverIpBytes.Length + blankByte.Length, localhostIP);
+            byteList.InsertRange(PatchFind.Length + serverIpBytes.Length + blankByte.Length + localhostIP.Length, blankByte);
             byteList.ToArray();
 
             // Read file bytes.
@@ -92,7 +97,7 @@ namespace LauncherRXJH
         private void StartGameButton_Click(object sender, EventArgs e)
         {
             // Set IP and Port
-            serverIp = serverIpTextBox.Text;
+            serverIp = ipAddressControl.Text;
             serverPort = serverPortTextBox.Text;
 
             // Get IP and Port to write to launcher file
@@ -105,8 +110,11 @@ namespace LauncherRXJH
                 // Try to patch clientExe
                 try
                 {
-                    // Run Patching code; Format (input , output)
+                    // Run Patching code; Format (input, output)
                     PatchFile(clientExe, clientExe);
+
+                    // Sleep thread after patching
+                    Thread.Sleep(200);
                 }
                 // If patching fails, display error and exit
                 catch (Exception ex)
@@ -114,10 +122,7 @@ namespace LauncherRXJH
                     MessageBox.Show(ex.Message);
                     Environment.Exit(0);
                 }
-
-                // Sleep thread after patching
-                //System.Threading.Thread.Sleep(200);
-
+                
                 // Run Client with command line arguments
                 try
                 {
@@ -128,9 +133,6 @@ namespace LauncherRXJH
                 {
                     MessageBox.Show(ex.Message);
                 }
-
-                // Sleep thread after running
-                //System.Threading.Thread.Sleep(200);
 
                 // Close launcher
                 this.Close();
