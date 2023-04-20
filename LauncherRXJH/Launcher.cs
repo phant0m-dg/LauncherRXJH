@@ -43,7 +43,7 @@ namespace LauncherRXJH
             {
                 // Read File and Set TextBox strings
                 string[] readLauncherFile = File.ReadAllLines(launcherIpPort, Encoding.UTF8);
-                ipAddressControl.Text = readLauncherFile[0];
+                serverIpTextBox.Text = readLauncherFile[0];
                 serverPortTextBox.Text = readLauncherFile[1];
             }
         }
@@ -97,7 +97,7 @@ namespace LauncherRXJH
         private void StartGameButton_Click(object sender, EventArgs e)
         {
             // Set IP and Port
-            serverIp = ipAddressControl.Text;
+            serverIp = serverIpTextBox.Text;
             serverPort = serverPortTextBox.Text;
 
             // Get IP and Port to write to launcher file

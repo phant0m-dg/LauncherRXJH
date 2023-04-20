@@ -33,7 +33,7 @@
             this.serverPortTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.ipAddressControl = new IPAddressControlLib.IPAddressControl();
+            this.serverIpTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // startGameButton
@@ -42,7 +42,7 @@
             this.startGameButton.Name = "startGameButton";
             this.startGameButton.Size = new System.Drawing.Size(185, 63);
             this.startGameButton.TabIndex = 0;
-            this.startGameButton.Text = "START GAME";
+            this.startGameButton.Text = "PATCH AND START GAME";
             this.startGameButton.UseVisualStyleBackColor = true;
             this.startGameButton.Click += new System.EventHandler(this.StartGameButton_Click);
             // 
@@ -73,20 +73,13 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Server Port";
             // 
-            // ipAddressControl
+            // serverIpTextBox
             // 
-            this.ipAddressControl.AllowInternalTab = false;
-            this.ipAddressControl.AutoHeight = true;
-            this.ipAddressControl.BackColor = System.Drawing.SystemColors.Window;
-            this.ipAddressControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressControl.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.ipAddressControl.Location = new System.Drawing.Point(75, 14);
-            this.ipAddressControl.MinimumSize = new System.Drawing.Size(87, 20);
-            this.ipAddressControl.Name = "ipAddressControl";
-            this.ipAddressControl.ReadOnly = false;
-            this.ipAddressControl.Size = new System.Drawing.Size(122, 20);
-            this.ipAddressControl.TabIndex = 5;
-            this.ipAddressControl.Text = "127.0.0.1";
+            this.serverIpTextBox.Location = new System.Drawing.Point(75, 14);
+            this.serverIpTextBox.Name = "serverIpTextBox";
+            this.serverIpTextBox.Size = new System.Drawing.Size(122, 20);
+            this.serverIpTextBox.TabIndex = 5;
+            this.serverIpTextBox.Text = "127.0.0.1";
             // 
             // Launcher
             // 
@@ -94,7 +87,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(209, 141);
-            this.Controls.Add(this.ipAddressControl);
+            this.Controls.Add(this.serverIpTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serverPortTextBox);
@@ -119,7 +112,7 @@
         private System.Windows.Forms.TextBox serverPortTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private IPAddressControlLib.IPAddressControl ipAddressControl;
+        private System.Windows.Forms.TextBox serverIpTextBox;
     }
 }
 
